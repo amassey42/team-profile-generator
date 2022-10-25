@@ -1,11 +1,13 @@
 //node modules
 const inquirer = require('inquirer');
 const fs = require('fs')
+const genHtml = require("./util/generateHtml")
 //Role profiles
 const Employee = require('./lib/Employee');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 const Manager = require('./lib/Manager')
+
 
 //team
 const teamArray = [];
@@ -54,7 +56,7 @@ const addEmployee = ()=>{
         } 
     ]).then(employeeInput =>{
         //takes employee inputs and adds it to array.
-        const { name, id, email, role, github, school, addMoreEmployees} = employeeInput;
+        const {role} = employeeInput;
         //determine if its an Engineer or Intern and save the data accordingly.
         if (role === "Intern") {
             addIntern(role)
@@ -140,9 +142,17 @@ const addExtraEmployees = () =>{
             name: "addMoreEmployees"
         },
     ]).then(answer =>{
-        if(answer = true){
+        console.log(answer)
+        if(answer.addMoreEmployees === true){
             addEmployee();
+        } else if(answer.addMoreEmployees === false){
+           buildTeam();
         }
+    })
+}
+const buildTeam=()=>{
+    fs.writeFile("./generateHTML/index.html",genHtml(teamArray),(err)=>{
+        err ? console.log(err) : console.log("stuff")
     })
 }
 

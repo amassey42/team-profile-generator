@@ -65,6 +65,7 @@ const addEmployee = ()=>{
     })
 }
 
+//intern questions
 const addIntern = (role) => {
     inquirer.prompt([
         {
@@ -88,19 +89,16 @@ const addIntern = (role) => {
             message: "Please enter your Intern's school.",
             name: "school"
         },
-        {
-            type: "confirm",
-            message: "Would you like to add another Employee?",
-            name: "addMoreEmployees"
-        },
     ]).then(internInput => {
         const { name, id, email, school, addMoreEmployees } = internInput;
         const intern = new Intern (name, id, email, school);
         teamArray.push(intern);
         console.log(teamArray);
+        addExtraEmployees();
     })  
 }
 
+//Engineer questions
 const addEngineer = (role) => {
     inquirer.prompt([
         {
@@ -124,17 +122,28 @@ const addEngineer = (role) => {
             message: "Please enter your Engineer's github username.",
             name: "github"
         },
+       
+    ]).then(engineerInput => {
+        const { name, id, email, github, addMoreEmployees } = engineerInput;
+        const engineer = new Engineer (name, id, email, github);
+        teamArray.push(engineer);
+        console.log(teamArray);
+        addExtraEmployees();
+    })  
+}
+
+const addExtraEmployees = () =>{
+    inquirer.prompt([
         {
             type: "confirm",
             message: "Would you like to add another Employee?",
             name: "addMoreEmployees"
         },
-    ]).then(engineerInput => {
-        const { name, id, email, github, addMoreEmployees } = engineerInput;
-        const engineer = new Intern (name, id, email, github);
-        teamArray.push(engineer);
-        console.log(teamArray);
-    })  
+    ]).then(answer =>{
+        if(answer = true){
+            addEmployee();
+        }
+    })
 }
 
 teamManager();

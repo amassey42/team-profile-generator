@@ -10,6 +10,7 @@ const Manager = require('./lib/Manager')
 //team
 const teamArray = [];
 
+//team manager prompt
 const teamManager = ()=>{
     inquirer.prompt([
         {
@@ -33,14 +34,16 @@ const teamManager = ()=>{
             name: "officeNumber"
         }
     ]) .then(managerInput =>{
+        //takes manager input and adds it to the team array
         const { name, id, email, officeNumber} = managerInput;
         const manager = new Manager (name, id, email, officeNumber);
         teamArray.push(manager);
         console.log(manager);
+        addEmployee();
     })
-    addEmployee();
 };
 
+//employee prompt
 const addEmployee = ()=>{
     inquirer.prompt([
         {
@@ -48,42 +51,90 @@ const addEmployee = ()=>{
             name:"role",
             message: "What is your emoployee's position?",
             choices: ["Intern", "Engineer"]
-        },  
+        } 
+    ]).then(employeeInput =>{
+        //takes employee inputs and adds it to array.
+        const { name, id, email, role, github, school, addMoreEmployees} = employeeInput;
+        //determine if its an Engineer or Intern and save the data accordingly.
+        if (role === "Intern") {
+            addIntern(role)
+        } else {
+            addEngineer(role)
+        }
+        
+    })
+}
+
+const addIntern = (role) => {
+    inquirer.prompt([
         {
             type: "input",
-            message: "Please enter your employee's name.",
+            message: "Please enter your Intern's name.",
             name: 'name'
         },
 
         {
             type: "input",
-            message: "Please enter your employee's id number.",
+            message: "Please enter your Intern's id number.",
             name: 'id'
         },
         {
             type: "input",
-            message: "Please enter your employees email.",
+            message: "Please enter your Intern's email.",
             name: 'email'
         },
         {
             type: "input",
-            message: "Please enter your employees github username.",
-            name: "github"
+            message: "Please enter your Intern's school.",
+            name: "school"
+        },
+        {
+            type: "confirm",
+            message: "Would you like to add another Employee?",
+            name: "addMoreEmployees"
+        },
+    ]).then(internInput => {
+        const { name, id, email, school, addMoreEmployees } = internInput;
+        const intern = new Intern (name, id, email, school);
+        teamArray.push(intern);
+        console.log(teamArray);
+    })  
+}
+
+const addEngineer = (role) => {
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "Please enter your Engineer's name.",
+            name: 'name'
+        },
+
+        {
+            type: "input",
+            message: "Please enter your Engineer's id number.",
+            name: 'id'
         },
         {
             type: "input",
-            message: "Please enter your Intern's school.",
+            message: "Please enter your Engineer's email.",
+            name: 'email'
+        },
+        {
+            type: "input",
+            message: "Please enter your Engineer's github username.",
             name: "github"
         },
         {
             type: "confirm",
-            message: "Would you like to add another Employee?.",
+            message: "Would you like to add another Employee?",
             name: "addMoreEmployees"
         },
-    ]).then(employeeInput =>{
-        const { name, id, email, role, github, school, addMoreEmployees} = employeeInput;
-        let employee;
-    })
+    ]).then(engineerInput => {
+        const { name, id, email, github, addMoreEmployees } = engineerInput;
+        const engineer = new Intern (name, id, email, github);
+        teamArray.push(engineer);
+        console.log(teamArray);
+    })  
 }
 
 teamManager();

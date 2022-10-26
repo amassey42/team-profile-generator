@@ -92,7 +92,7 @@ const addIntern = (role) => {
             name: "school"
         },
     ]).then(internInput => {
-        const { name, id, email, school, addMoreEmployees } = internInput;
+        const { name, id, email, school, } = internInput;
         const intern = new Intern (name, id, email, school);
         teamArray.push(intern);
         console.log(teamArray);
@@ -126,7 +126,7 @@ const addEngineer = (role) => {
         },
        
     ]).then(engineerInput => {
-        const { name, id, email, github, addMoreEmployees } = engineerInput;
+        const { name, id, email, github,} = engineerInput;
         const engineer = new Engineer (name, id, email, github);
         teamArray.push(engineer);
         console.log(teamArray);
@@ -134,6 +134,7 @@ const addEngineer = (role) => {
     })  
 }
 
+//prompts the user if they want to add more employees
 const addExtraEmployees = () =>{
     inquirer.prompt([
         {
@@ -150,6 +151,7 @@ const addExtraEmployees = () =>{
         }
     })
 }
+//Writes the teamArray to a index.html file
 const buildTeam=()=>{
     fs.writeFile("./generateHTML/index.html",genHtml(teamArray),(err)=>{
         err ? console.log(err) : console.log("stuff")
